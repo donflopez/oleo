@@ -1,0 +1,64 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "background",
+        anchor: MiddleRight,
+        x: -150.,
+        width: 300.,
+        height: 500.,
+    ),
+    background: (
+        image: Data(Rgba((1.0, 1.0, 1.0, 0.0), (channel: Srgb))),
+    ),
+    children: [
+        Container(
+            transform: (
+                id: "header",
+                x: 0.,
+                y: 0.,
+                width: 300.,
+                height: 30.,
+                anchor: TopMiddle,
+            ),
+            background: (
+                image: Data(Rgba((1., 0., 0., 1.), (channel: Srgb))),
+            ),
+            children: [
+                Button(
+                    transform: (
+                        id: "close",
+                        x: 15.,
+                        width: 30.,
+                        height: 30.,
+                        anchor: MiddleLeft,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "X",
+                        font: File("font/square.ttf", Ttf, ()),
+                        font_size: 20.,
+                        normal_text_color: (0.2, 0.2, 1.0, 1.0),
+                        normal_image: Data(Rgba((0., 1., 0., 1.), (channel: Srgb))),
+                        hover_image: Data(Rgba((0.3, 1., 0.3, 1.), (channel: Srgb))),
+                        press_image: Data(Rgba((0.15, 1., 0.15, 1.), (channel: Srgb))),
+                        hover_sound: File("audio/boop.ogg", Ogg, ()),
+                        press_sound: File("audio/confirm.ogg", Ogg, ()),
+                    ),
+                ),
+            ]
+        ),
+        Container(
+            transform: (
+                id: "body",
+                y: -250.,
+                anchor: TopMiddle,
+                width: 300.,
+                height:500.,
+            ),
+            background: (
+                image: Data(Rgba((0.5, 0.1, 0.1, 1.), (channel: Srgb))),
+            ),
+            children: []
+        )
+    ]
+)
