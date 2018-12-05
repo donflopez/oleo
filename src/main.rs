@@ -80,8 +80,8 @@ fn main() -> amethyst::Result<()> {
                 .with_sprite_sheet_processor(),
         )?
         // .with_bundle(fly_control_bundle)?
-        .with_bundle(AudioBundle::new(|music: &mut Music| music.music.next()))?
-        .with_bundle(UiBundle::<String, String>::new())?;
+        .with_bundle(AudioBundle::new(|music: &mut Music| music.music.next()))?;
+    // .with_bundle(UiBundle::<String, String>::new())?;
     let mut game = Application::build(assets_dir, Pong)?
         .with_frame_limit(
             FrameRateLimitStrategy::SleepAndYield(Duration::from_millis(2)),
