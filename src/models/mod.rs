@@ -1,3 +1,4 @@
+pub mod coords;
 mod terrain;
 pub mod ui;
 mod world;
