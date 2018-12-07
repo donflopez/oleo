@@ -19,6 +19,19 @@ impl Default for Algebra {
 }
 
 impl Algebra {
+    pub fn get_tile_pos(
+        &self,
+        object_z: f32,
+        tile_dimension: f32,
+        grid_start_coord: f32,
+    ) -> Vector2<f32> {
+        let m_pos = self.get_mouse_position(object_z);
+        let x = (m_pos[0] / tile_dimension) - grid_start_coord;
+        let y = (m_pos[1] / tile_dimension) - grid_start_coord;
+
+        Vector2::new(x, y)
+    }
+
     pub fn get_mouse_position(&self, object_z: f32) -> Vector2<f32> {
         let s_w = self.screen[0];
         let s_h = self.screen[1];
