@@ -11,9 +11,9 @@ use GlobalGame;
 
 /// This system is responsible for moving all the paddles according to the user
 /// provided input.
-pub struct PaddleSystem;
+pub struct TerrainSystem;
 
-impl<'s> System<'s> for PaddleSystem {
+impl<'s> System<'s> for TerrainSystem {
     type SystemData = (
         ReadStorage<'s, Terrain>,
         WriteStorage<'s, Transform>,

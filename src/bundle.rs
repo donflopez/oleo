@@ -3,7 +3,9 @@ use amethyst::{
     ecs::prelude::DispatcherBuilder,
 };
 
-use systems::{AlgebraSystem, BounceSystem, MoveBallsSystem, PaddleSystem, UiSystem, WinnerSystem};
+use systems::{
+    AlgebraSystem, BounceSystem, MoveBallsSystem, TerrainSystem, UiSystem, WinnerSystem,
+};
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
 /// world. This bundle prepares the world for a game of pong.
@@ -13,8 +15,8 @@ impl<'a, 'b> SystemBundle<'a, 'b> for PongBundle {
     fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<()> {
         builder.add(AlgebraSystem, "algebra_system", &["input_system"]);
         builder.add(
-            PaddleSystem,
-            "paddle_system",
+            TerrainSystem,
+            "terrain_system",
             &["input_system", "algebra_system"],
         );
         builder.add(MoveBallsSystem, "ball_system", &[]);

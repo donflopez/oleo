@@ -1,7 +1,7 @@
 mod algebra;
 mod bounce;
 mod move_balls;
-mod paddle;
+mod terrain;
 mod ui;
 mod winner;
 
@@ -9,7 +9,7 @@ pub use self::{
     algebra::AlgebraSystem,
     bounce::BounceSystem,
     move_balls::MoveBallsSystem,
-    paddle::PaddleSystem,
+    terrain::TerrainSystem,
     ui::UiSystem,
     winner::{ScoreText, WinnerSystem},
 };
