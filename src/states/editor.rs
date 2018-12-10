@@ -56,10 +56,10 @@ impl<'a, 'b> SimpleState<'a, 'b> for Editor {
     }
 }
 
-fn initialise_ui(world: &mut World) -> Ui {
+fn initialise_ui(world: &mut World) {
     let sprite_sheet_handle = load_sprite_sheet(world);
 
-    let mut ui = Ui::new();
+    let mut ui = Ui::new(10, 10);
 
     for i in 0..ui.total {
         let tile_sprite_render = SpriteRender {
@@ -68,10 +68,13 @@ fn initialise_ui(world: &mut World) -> Ui {
         };
 
         let mut tile_pos = Transform::default();
+        let x = (i % 10) * 16;
+        let y = (i / 10) * 16;
 
-        tile_pos.set_xyz(((i % 10) * 16) as f32, ((i / 10) * 16) as f32, 10.);
+        tile_pos.set_xyz(x as f32, y as f32, 10.);
 
         ui.add_tile(
+            (x / 16, y / 16),
             world
                 .create_entity()
                 .with(tile_sprite_render)
@@ -82,7 +85,11 @@ fn initialise_ui(world: &mut World) -> Ui {
         );
     }
 
-    ui
+    world
+        .create_entity()
+        .with(ui)
+        .with(Removal::new(CurrentState::EditorMenu))
+        .build();
 }
 
 fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
