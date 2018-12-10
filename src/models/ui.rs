@@ -16,7 +16,7 @@ impl Ui {
     pub fn new(w: usize, h: usize) -> Ui {
         let mut list = Vec::new();
 
-        for row in 0..h {
+        for _ in 0..h {
             list.push(Vec::new())
         }
 
