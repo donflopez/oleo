@@ -15,12 +15,12 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{DisplayConfig, DrawFlat2D, DrawPbm, Pipeline, PosNormTangTex, RenderBundle, Stage},
-    ui::{DrawUi, UiBundle},
+    ui::DrawUi,
     utils::application_root_dir,
 };
 
 use audio::Music;
-use bundle::PongBundle;
+use bundle::OleoBundle;
 use std::time::Duration;
 
 const ARENA_HEIGHT: f32 = 100.0;
@@ -72,8 +72,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             InputBundle::<String, String>::new().with_bindings_from_file(&key_bindings_path)?,
         )?
-        .with_bundle(PongBundle)?
-        .with_bundle(TransformBundle::new().with_dep(&["ball_system", "paddle_system"]))?
+        .with_bundle(OleoBundle)?
+        .with_bundle(TransformBundle::new().with_dep(&["ball_system", "terrain_system"]))?
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_hide_hierarchy_system()

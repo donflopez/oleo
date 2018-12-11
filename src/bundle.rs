@@ -9,9 +9,9 @@ use systems::{
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
 /// world. This bundle prepares the world for a game of pong.
-pub struct PongBundle;
+pub struct OleoBundle;
 
-impl<'a, 'b> SystemBundle<'a, 'b> for PongBundle {
+impl<'a, 'b> SystemBundle<'a, 'b> for OleoBundle {
     fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<()> {
         builder.add(AlgebraSystem, "algebra_system", &["input_system"]);
         builder.add(
@@ -23,12 +23,12 @@ impl<'a, 'b> SystemBundle<'a, 'b> for PongBundle {
         builder.add(
             BounceSystem,
             "collision_system",
-            &["paddle_system", "ball_system"],
+            &["terrain_system", "ball_system"],
         );
         builder.add(
             WinnerSystem,
             "winner_system",
-            &["paddle_system", "ball_system"],
+            &["terrain_system", "ball_system"],
         );
         builder.add(UiSystem, "ui_system", &["input_system"]);
         // builder.add(

@@ -52,8 +52,8 @@ impl<'a, 'b> SimpleState<'a, 'b> for Pong {
 
         // println!("{:?}", Bresenham3d::new((0, 0, 0), (2, 2, 0)));
         // Setup our game.
-        initialise_paddles(world, sprite_sheet_handle.clone());
-        initialise_ball(world, sprite_sheet_handle.clone());
+        // initialise_paddles(world, sprite_sheet_handle.clone());
+        // initialise_ball(world, sprite_sheet_handle.clone());
         initialise_terrain(world);
         initialise_camera(world);
         initialise_audio(world);
@@ -90,7 +90,8 @@ fn initialise_tiles(world: &mut World) -> Vec<Vec<Entity>> {
         for x in 0..MAP_WIDTH {
             let tile_sprite_render = SpriteRender {
                 sprite_sheet: sprite_sheet_handle.clone(),
-                sprite_number: (y + x) / 10, // Change in a near future
+                // sprite_number: (y + x) / 10, // Change in a near future
+                sprite_number: 0,
             };
             let mut tile_pos = Transform::default();
             tile_pos.set_xyz((x * 16) as f32, (y * 16) as f32, 0.0);
