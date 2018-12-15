@@ -14,7 +14,10 @@ use amethyst::{
     ecs::prelude::{Component, DenseVecStorage},
     input::InputBundle,
     prelude::*,
-    renderer::{DisplayConfig, DrawFlat2D, DrawPbm, Pipeline, PosNormTangTex, RenderBundle, Stage},
+    renderer::{
+        ColorMask, DisplayConfig, DrawFlat2D, DrawPbm, Pipeline, PosNormTangTex, RenderBundle,
+        Stage, ALPHA,
+    },
     ui::DrawUi,
     utils::application_root_dir,
 };
@@ -53,7 +56,7 @@ fn main() -> amethyst::Result<()> {
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
-            .with_pass(DrawFlat2D::new())
+            .with_pass(DrawFlat2D::new().with_transparency(ColorMask::all(), ALPHA, None))
             .with_pass(DrawPbm::<PosNormTangTex>::new())
             .with_pass(DrawUi::new()),
     );
@@ -159,18 +162,21 @@ impl Default for CurrentState {
 #[derive(Default)]
 pub struct GlobalGame {
     current_state: CurrentState,
+    selected: usize,
 }
 
 impl GlobalGame {
     pub fn new() -> GlobalGame {
         GlobalGame {
             current_state: CurrentState::default(),
+            selected: 0,
         }
     }
 
     pub fn default() -> GlobalGame {
         GlobalGame {
             current_state: CurrentState::default(),
+            selected: 0,
         }
     }
 }

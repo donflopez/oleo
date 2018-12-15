@@ -1,11 +1,12 @@
-use amethyst::renderer::{Camera, Hidden};
+use amethyst::renderer::{Camera, Hidden, SpriteRender};
 use amethyst::{
     core::transform::Transform,
     ecs::prelude::{Join, Read, ReadStorage, System, WriteStorage},
     input::InputHandler,
 };
 use models::coords::Algebra;
-use models::Terrain;
+use models::ui::Ui;
+use models::{Cursor, Terrain};
 use CurrentState;
 use GlobalGame;
 
@@ -16,8 +17,11 @@ pub struct TerrainSystem;
 impl<'s> System<'s> for TerrainSystem {
     type SystemData = (
         ReadStorage<'s, Terrain>,
+        ReadStorage<'s, Cursor>,
+        ReadStorage<'s, Ui>,
         WriteStorage<'s, Transform>,
         WriteStorage<'s, Hidden>,
+        WriteStorage<'s, SpriteRender>,
         Read<'s, InputHandler<String, String>>,
         ReadStorage<'s, Camera>,
         Read<'s, GlobalGame>,
@@ -26,7 +30,7 @@ impl<'s> System<'s> for TerrainSystem {
 
     fn run(
         &mut self,
-        (terrains, mut transforms, mut hiddens, input, camera, g, alg): Self::SystemData,
+        (terrains, cursors, uis, mut transforms, mut hiddens, mut sprites, input, camera, g, alg): Self::SystemData,
     ) {
         if g.current_state == CurrentState::EditorMenu {
             return;
@@ -48,19 +52,27 @@ impl<'s> System<'s> for TerrainSystem {
                 }
             }
         }
+        for (_, transform) in (&cursors, &mut transforms).join() {
+            for terrain in (&terrains).join() {
+                let t = terrain;
 
-        for terrain in (&terrains).join() {
-            let t = terrain;
+                let tile_pos = alg.get_tile_pos(0., 16., -0.5);
+                let x = tile_pos[0];
+                let y = tile_pos[1];
 
-            let tile_pos = alg.get_tile_pos(0., 16., -0.5);
-            let x = tile_pos[0];
-            let y = tile_pos[1];
+                if x > 0. && y > 0. && (x as usize) < t.dimension_x && (y as usize) < t.dimension_y
+                {
+                    transform.set_xyz(x.trunc() * 16., y.trunc() * 16., 0.0001);
+                    let t_entity = t.tiles.get(y as usize).unwrap().get(x as usize).unwrap();
+                    let mut sprite = sprites.get_mut(*t_entity).unwrap();
 
-            if x > 0. && y > 0. && (x as usize) < t.dimension_x && (y as usize) < t.dimension_y {
-                let t_entity = t.tiles.get(y as usize).unwrap().get(x as usize).unwrap();
-                if !hiddens.contains(*t_entity) {
-                    hiddens.clear();
-                    hiddens.insert(*t_entity, Hidden::default());
+                    if !hiddens.contains(*t_entity) {
+                        println!("selected: {}", g.selected);
+                        sprite.sprite_number = g.selected;
+                        //     transform.set_xyz(x.trunc() * 16., y.trunc() * 16., 0.0001);
+                        //     hiddens.clear();
+                        //     hiddens.insert(*t_entity, Hidden::default());
+                    }
                 }
             }
         }

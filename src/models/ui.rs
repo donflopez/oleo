@@ -3,7 +3,7 @@ use amethyst::ecs::{Component, DenseVecStorage, Entity};
 // use models::Tile;
 
 pub struct Ui {
-    selected: usize,
+    pub selected: usize,
     list: Vec<Vec<Entity>>,
     pub total: usize,
     grid_dim: (usize, usize),
@@ -43,8 +43,18 @@ impl Ui {
 
         None
     }
+
+    pub fn set_sprite_value(&mut self, x: usize, y: usize) {
+        self.selected = x + (y * 10);
+    }
 }
 
 impl Component for Ui {
+    type Storage = DenseVecStorage<Self>;
+}
+
+pub struct Cursor {}
+
+impl Component for Cursor {
     type Storage = DenseVecStorage<Self>;
 }

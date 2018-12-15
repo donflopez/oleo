@@ -26,8 +26,8 @@ use amethyst::{
     },
     ui::{Anchor, TtfFormat, UiText, UiTransform},
 };
+use models::{Cursor, Terrain, Tile};
 use models::{Net, Nodite};
-use models::{Terrain, Tile};
 use states::editor::Editor;
 use systems::ScoreText;
 use CurrentState;
@@ -55,6 +55,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for Pong {
         // initialise_paddles(world, sprite_sheet_handle.clone());
         // initialise_ball(world, sprite_sheet_handle.clone());
         initialise_terrain(world);
+        initialise_cursor(world);
         initialise_camera(world);
         initialise_audio(world);
         initialise_score(world);
@@ -78,6 +79,23 @@ impl<'a, 'b> SimpleState<'a, 'b> for Pong {
 
         Trans::None
     }
+}
+
+fn initialise_cursor(world: &mut World) {
+    let sprite_sheet_handle = load_cursor_sprite_sheet(world);
+    let mut trans = Transform::default();
+
+    trans.set_xyz(0., 0., 10.);
+
+    world
+        .create_entity()
+        .with(SpriteRender {
+            sprite_sheet: sprite_sheet_handle,
+            sprite_number: 0,
+        })
+        .with(Cursor {})
+        .with(trans)
+        .build();
 }
 
 fn initialise_tiles(world: &mut World) -> Vec<Vec<Entity>> {
@@ -171,6 +189,34 @@ fn load_lights() -> (Light, Transform) {
     transform.set_xyz(0.0, 0.0, -10.0);
 
     (light, transform)
+}
+
+fn load_cursor_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
+    // Load the sprite sheet necessary to render the graphics.
+    // The texture is the pixel data
+    // `sprite_sheet` is the layout of the sprites on the image
+    // `texture_handle` is a cloneable reference to the texture
+    let texture_handle = {
+        let loader = world.read_resource::<Loader>();
+        let texture_storage = world.read_resource::<AssetStorage<Texture>>();
+        loader.load(
+            "texture/ui_spritesheet.png",
+            PngFormat,
+            TextureMetadata::srgb_scale(),
+            (),
+            &texture_storage,
+        )
+    };
+
+    let loader = world.read_resource::<Loader>();
+    let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
+    loader.load(
+        "texture/ui_spritesheet.ron", // Here we load the associated ron file
+        SpriteSheetFormat,
+        texture_handle, // We pass it the texture we want it to use
+        (),
+        &sprite_sheet_store,
+    )
 }
 
 fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
